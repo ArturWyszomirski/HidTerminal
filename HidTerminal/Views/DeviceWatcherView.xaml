@@ -4,10 +4,40 @@
              xmlns:vm="clr-namespace:HidTerminal.ViewModels"
              x:Class="HidTerminal.Views.DeviceWatcherView"
              x:DataType="vm:DeviceWatcherViewModel"
-             Title="DeviceWatcherView">
-    <VerticalStackLayout>
-        <Label Text="Vendor Id"
-               VerticalOptions="Center" 
-               HorizontalOptions="Center"/>
+             Title="HID Terminal">
+    <VerticalStackLayout VerticalOptions="Center"
+                         HorizontalOptions="Center"
+                         Margin="10"
+                         Spacing="10">
+        <HorizontalStackLayout VerticalOptions="Start" 
+                               HorizontalOptions="Start"
+                               Spacing="10">
+            <Label Text="Vendor Id:"
+                   VerticalOptions="Center"/>
+            <Entry Placeholder="Vendor Id"
+                   VerticalOptions="Center"
+                   Text="{Binding VendorId}"/>
+            <Label Text="Vendor Id:"
+                   VerticalOptions="Center"/>
+            <Entry Placeholder="Vendor Id"
+                   VerticalOptions="Center"
+                   Text="{Binding ProductId}"/>
+            <Label Text="Vendor Id:"
+                   VerticalOptions="Center"/>
+            <Entry Placeholder="Vendor Id"
+                   VerticalOptions="Center"
+                   Text="{Binding UsagePage}"/>
+            <Label Text="Vendor Id:"
+                   VerticalOptions="Center"/>
+            <Entry Placeholder="Vendor Id"
+                   Text="{Binding UsageId}"/>
+        </HorizontalStackLayout>
+        <Button Command="{Binding ScanDevicesCommand}"
+                Text="Search for devices"
+                VerticalOptions="Center"/>
+        <Picker Title="Detected devices:"
+                ItemsSource="{Binding Devices}"
+                ItemDisplayBinding="{Binding Name}"
+                SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"/>
     </VerticalStackLayout>
 </ContentPage>
