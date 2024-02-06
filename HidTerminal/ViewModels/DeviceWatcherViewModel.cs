@@ -45,8 +45,8 @@ public partial class DeviceWatcherViewModel: ViewModelBase
 
     partial void OnDataChanged(string? value)
     {
-        string[] values = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        for (int i  = 0; i < values.Length; i++)
+        string[]? values = value?.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        for (int i  = 0; i < values?.Length; i++)
         { 
             if (byte.TryParse(values[i], out byte valueAsByte))
                 _frame[i] = valueAsByte;
