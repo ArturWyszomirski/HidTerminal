@@ -8,5 +8,6 @@ global using MauiCoreLibrary.Services;
 global using HidComLibrary.Services;
 global using HidComLibrary.Factories;
 
+global using HidTerminal.Models;
 global using HidTerminal.ViewModels;
 global using HidTerminal.Views;

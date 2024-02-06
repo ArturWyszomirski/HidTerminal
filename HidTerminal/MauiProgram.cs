@@ -26,7 +26,7 @@ public static class MauiProgram
 
                         .AddTransient<IHidDeviceFactory, HidDeviceFactory>()
 
-                        .AddSingleton<IAppSettingsModel, AppSettingsModel>()
+                        .AddSingleton<IAppSettingsModel, HidTerminalSettingsModel>()
 
                         .AddTransient<DeviceWatcherViewModel>()
                         .AddTransient<DeviceWatcherView>();
