@@ -1,5 +1,5 @@
 ﻿namespace HidTerminal.ViewModels;
 
-internal class DeviceWatcherViewModel
+public class DeviceWatcherViewModel
 {
 }
