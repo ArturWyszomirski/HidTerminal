@@ -31,21 +31,28 @@
                    VerticalOptions="Center"/>
             <Entry Placeholder="Vendor Id"
                    Text="{Binding UsageId}"/>
+            <Button Command="{Binding ScanDevicesCommand}"
+                    Text="Search for devices"
+                    HorizontalOptions="Center"/>
         </HorizontalStackLayout>
-        <Button Command="{Binding ScanDevicesCommand}"
-                Text="Search for devices"
-                VerticalOptions="Center"/>
         <Picker Title="Detected devices:"
                 ItemsSource="{Binding Devices}"
                 ItemDisplayBinding="{Binding Name}"
                 SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"/>
-        <HorizontalStackLayout VerticalOptions="Start" 
-                               HorizontalOptions="Start"
-                               Spacing="10">
-            <Entry Placeholder="Data to be send..."
+        <Label Text="Frame:"/>
+        <Grid ColumnDefinitions="*, Auto"
+              ColumnSpacing="10">
+            <Entry Grid.Column="0"
+                   Placeholder="Data to be send (separate each byte with space)..."
                    Text="{Binding Data}"/>
-            <Button Command="{Binding SendFrameCommand}"
-                    Text="Send"/>
-        </HorizontalStackLayout>
+            <Button Grid.Column="1"
+                    Command="{Binding SendFrameCommand}"
+                    Text="Send"
+                    HorizontalOptions="End"/>
+        </Grid>
+        <Label Text="Output:"/>
+        <Editor Text="{Binding Output}"
+                HeightRequest="400"
+                WidthRequest="1000"/>
     </VerticalStackLayout>
 </ContentPage>

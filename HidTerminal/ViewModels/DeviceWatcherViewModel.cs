@@ -20,6 +20,33 @@ public partial class DeviceWatcherViewModel: ViewModelBase
                     if (!Devices.Contains(SelectedDevice))
                         SelectedDevice = null;
         };
+
+        hidUsbService.FrameSent += (s, e) => MainThread.BeginInvokeOnMainThread(() =>
+        {
+            {
+                if (e.HidDevice == SelectedDevice)
+                {
+                    Output += $"\n\n{DateTime.Now}";
+                    Output += "\nSent frame:\n";
+                    foreach (byte b in e.SentFrame)
+                        Output += b.ToString() + " ";
+                }
+            };
+        });
+
+        hidUsbService.FrameReceived += (s, e) => MainThread.BeginInvokeOnMainThread(() =>
+        {
+            {
+                if (e.HidDevice == SelectedDevice)
+                {
+                    Output += $"\n\n{DateTime.Now}";
+                    Output += "\nReceived frame:\n";
+                    foreach (byte b in e.ReceivedFrame)
+                        Output += b.ToString() + " ";
+                }
+            };
+        });
+        
     }
 
     [ObservableProperty]
@@ -42,6 +69,9 @@ public partial class DeviceWatcherViewModel: ViewModelBase
 
     [ObservableProperty]
     string? _data;
+
+    [ObservableProperty]
+    string? _output;
 
     partial void OnDataChanged(string? value)
     {
