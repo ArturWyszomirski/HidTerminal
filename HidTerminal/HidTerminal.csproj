@@ -62,4 +62,9 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\HidComLibrary\HidComLibrary.csproj" />
+	  <ProjectReference Include="..\..\MauiCoreLibrary\MauiCoreLibrary.csproj" />
+	</ItemGroup>
+
 </Project>
