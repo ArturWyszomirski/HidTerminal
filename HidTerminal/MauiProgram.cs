@@ -18,6 +18,9 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
+        builder.Services.AddTransient<DeviceWatcherViewModel>()
+                        .AddTransient<DeviceWatcherView>();
+
         return builder.Build();
     }
 }
