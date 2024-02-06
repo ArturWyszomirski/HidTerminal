@@ -67,4 +67,8 @@
 	  <ProjectReference Include="..\..\MauiCoreLibrary\MauiCoreLibrary.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Views\" />
+	</ItemGroup>
+
 </Project>
