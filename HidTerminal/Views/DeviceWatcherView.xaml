@@ -7,7 +7,7 @@
              Title="DeviceWatcherView">
     <VerticalStackLayout>
         <Label Text="Vendor Id"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+               VerticalOptions="Center" 
+               HorizontalOptions="Center"/>
     </VerticalStackLayout>
 </ContentPage>
