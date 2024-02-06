@@ -2,11 +2,14 @@
 
 public partial class DeviceWatcherViewModel: ViewModelBase
 {
+    readonly IAlertService _alert;
     readonly IHidUsbService _hidUsbService;
+
     readonly byte[] _frame = new byte[64];
 
-    public DeviceWatcherViewModel(IHidUsbService hidUsbService)
+    public DeviceWatcherViewModel(IAlertService alert, IHidUsbService hidUsbService)
     {
+        _alert = alert;
         _hidUsbService = hidUsbService;
         Devices = hidUsbService.HidDevices;
 
@@ -89,5 +92,9 @@ public partial class DeviceWatcherViewModel: ViewModelBase
     void ScanDevices() => _hidUsbService.StartDeviceWatcher(VendorId, ProductId, UsagePage, UsageId);
 
     [RelayCommand]
-    async Task SendFrameAsync() => await _hidUsbService.SendFrameAsync(SelectedDevice, _frame);
+    async Task SendFrameAsync()
+    {
+        bool result = await _hidUsbService.SendFrameAsync(SelectedDevice, _frame);
+        if (!result) await _alert.DisplayAlertAsync("Error", "Sending frame unsuccessful", "Ok");
+    }
 }
