@@ -8,8 +8,8 @@
     Title="HidTerminal">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Title="Device watcher"
+        ContentTemplate="{DataTemplate local:DeviceWatcherView}"
+        Route="DeviceWatcherPage" />
 
 </Shell>

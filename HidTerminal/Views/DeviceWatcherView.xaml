@@ -6,8 +6,7 @@
              x:DataType="vm:DeviceWatcherViewModel"
              Title="DeviceWatcherView">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
+        <Label Text="Vendor Id"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
     </VerticalStackLayout>
