@@ -2,10 +2,13 @@
 
 public partial class App : Application
 {
-    public App()
+    public App(IFileLogService log)
     {
         InitializeComponent();
 
         MainPage = new AppShell();
+
+        log.CreateFile();
+        log.AppendLine("App started");
     }
 }

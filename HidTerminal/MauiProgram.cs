@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 
 namespace HidTerminal;
+
 public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
@@ -18,7 +19,16 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-        builder.Services.AddTransient<DeviceWatcherViewModel>()
+        builder.Services.AddSingleton<INavigationService, NavigationService>()
+                        .AddSingleton<IAlertService, AlertService>()
+                        .AddSingleton<IFileLogService, FileLogService>()
+                        .AddSingleton<IHidUsbService, HidUsbService>()
+
+                        .AddTransient<IHidDeviceFactory, HidDeviceFactory>()
+
+                        .AddSingleton<IAppSettingsModel, AppSettingsModel>()
+
+                        .AddTransient<DeviceWatcherViewModel>()
                         .AddTransient<DeviceWatcherView>();
 
         return builder.Build();
