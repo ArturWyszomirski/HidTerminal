@@ -2,7 +2,8 @@
 
 public partial class DeviceWatcherViewModel: ViewModelBase
 {
-    private readonly IHidUsbService _hidUsbService;
+    readonly IHidUsbService _hidUsbService;
+    readonly byte[] _frame = new byte[64];
 
     public DeviceWatcherViewModel(IHidUsbService hidUsbService)
     {
@@ -39,6 +40,24 @@ public partial class DeviceWatcherViewModel: ViewModelBase
     [ObservableProperty]
     IHidDeviceModel? _selectedDevice;
 
+    [ObservableProperty]
+    string? _data;
+
+    partial void OnDataChanged(string? value)
+    {
+        string[] values = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        for (int i  = 0; i < values.Length; i++)
+        { 
+            if (byte.TryParse(values[i], out byte valueAsByte))
+                _frame[i] = valueAsByte;
+            else
+                throw new ArgumentException("Error trying parsing to byte", value);
+        }
+    }
+
     [RelayCommand]
     void ScanDevices() => _hidUsbService.StartDeviceWatcher(VendorId, ProductId, UsagePage, UsageId);
+
+    [RelayCommand]
+    async Task SendFrameAsync() => await _hidUsbService.SendFrameAsync(SelectedDevice, _frame);
 }

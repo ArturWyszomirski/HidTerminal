@@ -39,5 +39,13 @@
                 ItemsSource="{Binding Devices}"
                 ItemDisplayBinding="{Binding Name}"
                 SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"/>
+        <HorizontalStackLayout VerticalOptions="Start" 
+                               HorizontalOptions="Start"
+                               Spacing="10">
+            <Entry Placeholder="Data to be send..."
+                   Text="{Binding Data}"/>
+            <Button Command="{Binding SendFrameCommand}"
+                    Text="Send"/>
+        </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>
