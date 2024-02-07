@@ -24,25 +24,15 @@ public partial class DeviceWatcherViewModel: ViewModelBase
                         SelectedDevice = null;
         };
 
-        hidUsbService.FrameSent += (s, e) => MainThread.BeginInvokeOnMainThread(() =>
-        {
-            if (e.HidDevice == SelectedDevice)
-            {
-                Output += $"\n\n{DateTime.Now}";
-                Output += "\nSent frame:\n";
-                foreach (byte b in e.SentFrame)
-                    Output += b.ToString() + " ";
-            }
-        });
-
         hidUsbService.FrameReceived += (s, e) => MainThread.BeginInvokeOnMainThread(() =>
         {
             if (e.HidDevice == SelectedDevice)
             {
-                Output += $"\n\n{DateTime.Now}";
+                Output += $"\n{DateTime.Now}";
                 Output += "\nReceived frame:\n";
                 foreach (byte b in e.ReceivedFrame)
                     Output += b.ToString() + " ";
+                Output += "\n";
             }
         });
     }
@@ -89,7 +79,23 @@ public partial class DeviceWatcherViewModel: ViewModelBase
     [RelayCommand]
     async Task SendFrameAsync()
     {
+        //MainThread.BeginInvokeOnMainThread(async() =>
+        //{
+        Output += $"\n\n---\n{DateTime.Now}";
+        Output += "\nSend frame request:\n";
+        foreach (byte b in _frame)
+            Output += b.ToString() + " ";
+        Output += "\n";
+
         bool result = await _hidUsbService.SendFrameAsync(SelectedDevice, _frame);
-        if (!result) await _alert.DisplayAlertAsync("Error", "Sending frame unsuccessful", "Ok");
+            if (result)
+                Output += $"\n{DateTime.Now}\nSend frame successful!\n";
+            else
+            {
+                Output += $"\n{DateTime.Now}\nSend frame successful!\n";
+                await _alert.DisplayAlertAsync("Error", "Sending frame unsuccessful", "Ok");
+            }
+        //});
+        
     }
 }
