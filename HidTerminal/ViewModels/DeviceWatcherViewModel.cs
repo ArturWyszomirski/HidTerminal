@@ -28,7 +28,7 @@ public partial class DeviceWatcherViewModel: ViewModelBase
         {
             if (e.HidDevice == SelectedDevice)
             {
-                Output += $"\n{DateTime.Now}";
+                Output += $"\n\n{DateTime.Now}";
                 Output += "\nReceived frame:\n";
                 foreach (byte b in e.ReceivedFrame)
                     Output += b.ToString() + " ";
