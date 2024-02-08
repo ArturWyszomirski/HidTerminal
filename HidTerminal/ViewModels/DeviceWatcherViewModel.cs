@@ -5,7 +5,7 @@ public partial class DeviceWatcherViewModel: ViewModelBase
     readonly IAlertService _alert;
     readonly IHidUsbService _hidUsbService;
 
-    readonly byte[] _frame = new byte[64];
+    byte[] _frame = new byte[64];
 
     public DeviceWatcherViewModel(IAlertService alert, IHidUsbService hidUsbService)
     {
@@ -28,11 +28,29 @@ public partial class DeviceWatcherViewModel: ViewModelBase
         {
             if (e.HidDevice == SelectedDevice)
             {
+                //string receivedFrame = BitConverter.ToString(e.ReceivedFrame).Replace("-", " ");
+                //Output += $"\n\n{DateTime.Now}\nReceived frame:\n{receivedFrame}\n";
                 Output += $"\n\n{DateTime.Now}";
                 Output += "\nReceived frame:\n";
+
+                string receivedFrame = String.Empty;
                 foreach (byte b in e.ReceivedFrame)
-                    Output += b.ToString() + " ";
-                Output += "\n";
+                    receivedFrame += b.ToString() + " ";
+
+                Output += $"{receivedFrame}\n";
+
+                int point = e.ReceivedFrame[4];
+                float frequency = BitConverter.ToSingle(e.ReceivedFrame, 5);
+                float resistance = BitConverter.ToSingle(e.ReceivedFrame, 9);
+                float reactance = BitConverter.ToSingle(e.ReceivedFrame, 13);
+                float resistanceCalibration = BitConverter.ToSingle(e.ReceivedFrame, 17);
+                float reactanceCalibration = BitConverter.ToSingle(e.ReceivedFrame, 21);
+                if (e.ReceivedFrame[1] == 32 || e.ReceivedFrame[1] == 33)
+                    Output += $"\nPoint: {point}. Freq: {frequency} Hz. " +
+                    $"Resistance: {resistance} Ohm. " +
+                    $"Reactance: {reactance} Ohm. " +
+                    $"Resistance calibration: {resistanceCalibration} Ohm." +
+                    $"Resistance calibration: {reactanceCalibration} Ohm.";
             }
         });
     }
@@ -56,7 +74,7 @@ public partial class DeviceWatcherViewModel: ViewModelBase
     IHidDeviceModel? _selectedDevice;
 
     [ObservableProperty]
-    string? _data;
+    string? _data;// = "33 4 0 0 112 65 0 0 0 0 20 0 0 0 19 0 0 64 28 70 0 0 32 65"; // log, P2P = 15 mv, DC = 0, 20 points, speed = 19, 10000 - 10 Hz
 
     [ObservableProperty]
     string? _output;
@@ -64,13 +82,17 @@ public partial class DeviceWatcherViewModel: ViewModelBase
     partial void OnDataChanged(string? value)
     {
         string[]? values = value?.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+        byte[] frame = new byte[64];
         for (int i  = 0; i < values?.Length; i++)
         { 
             if (byte.TryParse(values[i], out byte valueAsByte))
-                _frame[i] = valueAsByte;
+                frame[i] = valueAsByte;
             else
                 throw new ArgumentException("Error trying parsing to byte", value);
         }
+
+        _frame = frame;
     }
 
     [RelayCommand]
@@ -79,23 +101,20 @@ public partial class DeviceWatcherViewModel: ViewModelBase
     [RelayCommand]
     async Task SendFrameAsync()
     {
-        //MainThread.BeginInvokeOnMainThread(async() =>
-        //{
         Output += $"\n\n---\n{DateTime.Now}";
         Output += "\nSend frame request:\n";
+        Output += "0 ";
         foreach (byte b in _frame)
             Output += b.ToString() + " ";
         Output += "\n";
 
         bool result = await _hidUsbService.SendFrameAsync(SelectedDevice, _frame);
             if (result)
-                Output += $"\n{DateTime.Now}\nSend frame successful!\n";
+                Output += $"\n{DateTime.Now}\nSend frame successful!";
             else
             {
-                Output += $"\n{DateTime.Now}\nSend frame successful!\n";
+                Output += $"\n{DateTime.Now}\nSend frame successful!";
                 await _alert.DisplayAlertAsync("Error", "Sending frame unsuccessful", "Ok");
             }
-        //});
-        
     }
 }
