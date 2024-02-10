@@ -49,8 +49,8 @@ public partial class DeviceWatcherViewModel: ViewModelBase
                     Output += $"\nPoint: {point}. Freq: {frequency} Hz. " +
                     $"Resistance: {resistance} Ohm. " +
                     $"Reactance: {reactance} Ohm. " +
-                    $"Resistance calibration: {resistanceCalibration} Ohm." +
-                    $"Resistance calibration: {reactanceCalibration} Ohm.";
+                    $"Resistance calibration: {resistanceCalibration} Ohm. " +
+                    $"Reactance calibration: {reactanceCalibration} Ohm.";
             }
         });
     }
