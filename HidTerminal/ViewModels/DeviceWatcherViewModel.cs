@@ -56,6 +56,9 @@ public partial class DeviceWatcherViewModel: ViewModelBase
     IHidDeviceModel? _selectedDevice;
 
     [ObservableProperty]
+    ushort? _reportId = 0;
+
+    [ObservableProperty]
     string? _data;
 
     [ObservableProperty]
@@ -74,20 +77,19 @@ public partial class DeviceWatcherViewModel: ViewModelBase
     }
 
     [RelayCommand]
-    void ScanDevices() => _hidUsbService.StartDeviceWatcher(VendorId, ProductId, UsagePage, UsageId);
+    void StartDeviceWatcher() => _hidUsbService.StartDeviceWatcher(VendorId, ProductId, UsagePage, UsageId);
 
     [RelayCommand]
     async Task SendFrameAsync()
     {
-        //MainThread.BeginInvokeOnMainThread(async() =>
-        //{
         Output += $"\n\n---\n{DateTime.Now}";
         Output += "\nSend frame request:\n";
+        Output += $"{ReportId} ";
         foreach (byte b in _frame)
             Output += b.ToString() + " ";
         Output += "\n";
 
-        bool result = await _hidUsbService.SendFrameAsync(SelectedDevice, _frame);
+        bool result = await _hidUsbService.SendFrameAsync(SelectedDevice, ReportId, _frame);
             if (result)
                 Output += $"\n{DateTime.Now}\nSend frame successful!\n";
             else
@@ -95,7 +97,5 @@ public partial class DeviceWatcherViewModel: ViewModelBase
                 Output += $"\n{DateTime.Now}\nSend frame successful!\n";
                 await _alert.DisplayAlertAsync("Error", "Sending frame unsuccessful", "Ok");
             }
-        //});
-        
     }
 }
