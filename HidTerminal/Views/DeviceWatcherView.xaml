@@ -41,7 +41,8 @@
                 SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"/>
         <Grid ColumnDefinitions="Auto, *, Auto"
               RowDefinitions="*, *"
-              ColumnSpacing="10">
+              ColumnSpacing="20"
+              RowSpacing="10">
             <Label Grid.Column="0"
                    Grid.Row="0"
                    Text="Report Id:"/>
@@ -57,7 +58,7 @@
                    Placeholder="Data to be send (separate each byte with space)..."
                    Text="{Binding Data}"/>
             <Button Grid.Column="2"
-                    Grid.RowSpan="2"
+                    Grid.Row="1"
                     Command="{Binding SendFrameCommand}"
                     Text="Send"
                     VerticalOptions="Center"
