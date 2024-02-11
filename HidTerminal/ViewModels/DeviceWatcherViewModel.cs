@@ -25,7 +25,7 @@ public partial class DeviceWatcherViewModel: ViewModelBase
         };
 
         hidUsbService.FrameReceived += (s, e) => MainThread.BeginInvokeOnMainThread(() =>
-        {
+        { 
             if (e.HidDevice == SelectedDevice)
             {
                 Output += $"\n\n{DateTime.Now}";
