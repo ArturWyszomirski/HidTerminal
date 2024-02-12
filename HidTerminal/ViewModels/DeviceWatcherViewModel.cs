@@ -116,7 +116,7 @@ public partial class DeviceWatcherViewModel: ViewModelBase
                 Output += $"\n{DateTime.Now}\nSend frame successful!";
             else
             {
-                Output += $"\n{DateTime.Now}\nSend frame successful!";
+                Output += $"\n{DateTime.Now}\nSend frame error!";
                 await _alert.DisplayAlertAsync("Error", "Sending frame unsuccessful", "Ok");
             }
     }
