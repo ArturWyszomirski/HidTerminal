@@ -92,7 +92,7 @@ public partial class DeviceWatcherViewModel: ViewModelBase
             if (byte.TryParse(values[i], out byte valueAsByte))
                 frame[i] = valueAsByte;
             else
-                throw new ArgumentException("Error trying parsing to byte", value);
+                throw new ArgumentException("Parse to byte error.", value);
         }
 
         _frame = frame;
